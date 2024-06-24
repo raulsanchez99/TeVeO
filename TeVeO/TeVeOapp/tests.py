@@ -14,7 +14,7 @@ class Tests(TestCase):
             'font_family': 'TEST'}
         response = views.config(request)
         print("Test config")
-        self.assertEqual(response.status_code, 300)
+        self.assertEqual(response.status_code, 200)
 
     def test_index(self):
 
@@ -25,7 +25,7 @@ class Tests(TestCase):
             'font_family': 'TEST'}
         response = views.index(request)
         print("Test index")
-        self.assertEqual(response.status_code, 300)
+        self.assertEqual(response.status_code, 200)
 
 
     def test_camaras(self):
@@ -50,7 +50,7 @@ class Tests(TestCase):
             'font_size': 'TEST',
             'font_family': 'TEST'}
         response = views.camaras(request, 'TEST')
-        self.assertEqual(response.status_code, 300)
+        self.assertEqual(response.status_code, 200)
         print("Test camaras")
 
         # Borramos la camara
@@ -65,7 +65,7 @@ class Tests(TestCase):
             'font_family': 'TEST'}
         response = views.pag_camaras(request)
         print("Test pag_camaras")
-        self.assertEqual(response.status_code, 300)
+        self.assertEqual(response.status_code, 200)
 
 
 
@@ -77,7 +77,7 @@ class Tests(TestCase):
             'font_size': 'TEST',
             'font_family': 'TEST'}
         response = views.ver_comentarios(request)
-        self.assertEqual(response.status_code, 300)
+        self.assertEqual(response.status_code, 200)
         print("Test ver_comentarios")
 
 
@@ -131,7 +131,7 @@ class Tests(TestCase):
             'font_size': 'TEST',
             'font_family': 'TEST'}
         response = views.get_imagen(request, 'TEST')
-        self.assertEqual(response.status_code, 300)
+        self.assertEqual(response.status_code, 200)
         print("Test get_imagen")
 
         # Borramos la camara
@@ -170,7 +170,7 @@ class Tests(TestCase):
             'font_size': 'TEST',
             'font_family': 'TEST'}
         response = views.cargar_comentarios(request, 'TEST')
-        self.assertEqual(response.status_code, 300)
+        self.assertEqual(response.status_code, 200)
         print("Test cargar_comentarios")
 
         # Borramos la camara
@@ -198,7 +198,7 @@ class Tests(TestCase):
             'font_family': 'TEST'}
 
         response = views.camara_json(request, 'TEST')
-        self.assertEqual(response.status_code, 300)
+        self.assertEqual(response.status_code, 200)
         print("Test camara_json")
 
         # Borramos la camara
@@ -213,7 +213,7 @@ class Tests(TestCase):
             'font_family': 'TEST'}
         response = views.camaras_json(request)
         print("Test camaras_json")
-        self.assertEqual(response.status_code, 300)
+        self.assertEqual(response.status_code, 200)
 
     def test_help(self):
 
@@ -224,5 +224,5 @@ class Tests(TestCase):
             'font_family': 'TEST'}
         response = views.help(request)
         print("Test help")
-        self.assertEqual(response.status_code, 300)
+        self.assertEqual(response.status_code, 200)
 
