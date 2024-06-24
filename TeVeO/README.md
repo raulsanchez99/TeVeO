@@ -11,7 +11,7 @@
 * Cuenta en laboratorios: raulsm
 * Cuenta URJC: r.sanchezmer.2017
 * Video básico (url): https://youtu.be/aZRgjldtjtM
-* Despliegue (url):
+* Despliegue (url): rauls.pythonanywhere.com
 * Contraseñas: No hay contraseñas
 * Cuenta Admin Site: usuario/contraseña: admin/admin
 
