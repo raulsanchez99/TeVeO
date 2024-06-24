@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+<script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+    
+{% block body %}
+<div id="login-section" class="container">
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-6">
+            <div class="card tn-primary">
+                <div class="card-header custom-gray-bg text-black">
+                    <h2 class="text-center">Inicia sesión</h2>
+                </div>
+                <div class="card-body text-white">
+                    <form id="login-form" method="post" action="{% url 'config' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="username">Nombre de usuario:</label>
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Ingrese su nombre de usuario">
+                        </div>
+
+                        <!-- Selección de Tamaño de Fuente -->
+                        <div class="form-group">
+                            <label for="font-size">Tamaño del texto:</label>
+                            <select class="form-control" id="font-size" name="font_size">
+                                <option value="standard">Predeterminada</option>
+                                <option value="large">Grande</option>
+                                <option value="small">Pequeña</option>
+                            </select>
+                        </div>
+                        <!-- Menú Desplegable de Familia de Fuentes -->
+                        <div class="form-group">
+                            <label for="font-family">Tipo de letra:</label>
+                            <select class="form-control" id="font-family" name="font_family">
+                                <option value="Arial" style="font-family: Arial;">Arial</option>
+                                <option value="Times New Roman" style="font-family: 'Times New Roman';">Times New Roman</option>
+                                <option value="Courier New" style="font-family: 'Courier New';">Courier New</option>
+                            </select>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn custom-gray-bg text-black mt-3 mb-3">Iniciar sesión</button>
+                        </div>
+                    </form>
+
+                    <form id="set-session-form" method="POST" action="{% url 'set_session' %}">
+                        {% csrf_token %}
+                        <label for="auth_link">Enlace de autenticación:</label>
+                        <input type="text" id="auth_link" name="auth_link">
+                        <button type="submit" class="btn custom-gray-bg text-black">Crear sesión</button>
+                    </form>
+
+                    <div class="text-center">
+                        <a id="generate-auth-link" href="{% url 'auth_link' %}" class="btn custom-gray-bg text-black mt-3">Generar enlace</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

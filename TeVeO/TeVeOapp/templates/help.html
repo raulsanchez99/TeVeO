@@ -1,0 +1,26 @@
+<!-- Esto va a ser un html básico donde se explique el funcionamiento de la aplicación. -->
+{% extends 'base.html' %}
+{% load static %}
+<!-- index.html -->
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+<script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+
+{% block body %}
+
+<div id="app-description" class="row">
+    <div class="col-12 text-center">
+        <div class="text-black" style="background-color: #f2f2f2; border-radius: 20px; padding: 10px; margin: 25px;">
+            <h1 style="margin-top: 10px;">Portal de Ayuda</h1>
+            <p>TeVeO es una aplicación web diseñada para ofrecer acceso visual en tiempo real a cámaras de vigilancia ubicadas en carreteras por toda España. Permite a los usuarios monitorear el tráfico, condiciones climáticas y eventos en tiempo real.</p>
+            <p>En el menú principal podrás acceder a la página principal para navegar por todo el contenido, explorar las cámaras en tiempo real, acceder al portal de administracion, crear una cuenta en la de configuracion y encontrar esta guía en el portal de ayuda.</p>
+            <p>Al acceder a la página principal visualizaras los comentarios que otros usuarios hayan realizado.</p>
+            <p>En la página de Cámaras de TeVeO, tendrás acceso a una amplia red de cámaras de tráfico distribuidas por toda España. Podrás visualizar en tiempo real la situación del tráfico en diferentes ubicaciones del país. Además, tendrás la opción de añadir tus propios comentarios y ver los de otros usuarios.</p>
+            <p>En la pagina de Administracion podras registrarte para configurar la web</p>
+            <p>En el portal de Configuracion podras registrarte con tu nombre de usuario, lo que te permitira comentar en las camaras que tu desees. Tambien podras elegir el tamaño y la fuente del texto</p>
+            <p>Aplicación desarrollada por Raul Sanchez Merino</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
