@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, Http40
 
 from .models import Camera, Comment, Token
 from .forms import ConfigForm
-from .camaras import *  # Importar todas las funciones de media_operations
+from .camaras import *
 from .configuration import *
 
 from django.utils import timezone
@@ -19,7 +19,6 @@ from django.urls import reverse
 from urllib.parse import urlparse, parse_qs
 
 # Create your views here.
-
 def config(request):
     if request.method == 'POST':
         form = ConfigForm(request.POST)
@@ -79,8 +78,6 @@ def index(request):
         'font_family': font_family,
     }
 
-    # Importante hacer con render y no con HttpResponse porque render es mas
-    # seguro y maneja mejor los errores
     return render(request, 'index.html', context)
 
 
@@ -102,8 +99,6 @@ def camaras(request):
     cameras = ordenarCamarasComentarios(order)
 
     username, font_size, font_family = userConfiguration(request)
-    # print(f"Username en mainCameras: {username},
-    # Font size: {font_size}, Font family: {font_family}")
 
     random_img = get_imagen_aleatoria()
     xml_files = get_xml()
@@ -123,11 +118,9 @@ def camaras(request):
 
 
 def pag_camaras(request, id):
-    # Seleccionar la cámara con el identificador indicado. Si no existe, se
-    # mostrará un mensaje de error. En caso contrario, se mostrará la imagen
-    # de la cámara, y un enlace para volver al listado de cámaras.
+    # Seleccionar la cámara con el identificador indicado. Si no existe, se muestra un mensaje de error.
 
-    # Obtener la cámara con el id indicado
+    # Obtener la cámara del id inidicado
     camera = Camera.objects.filter(id=id).first()
 
     if camera is None:
@@ -142,7 +135,7 @@ def pag_camaras(request, id):
     comments = ordenarComentariosFecha(
         Comment.objects.filter(camera=camera), order)
 
-    # Obtener el nombre de usuario, tamaño de fuente y familia de fuentes
+    # Obtener el nombre de usuario, tamaño de letra y estilo
     username, font_size, font_family = userConfiguration(request)
 
     context = {
@@ -158,14 +151,14 @@ def pag_camaras(request, id):
 
     return render(request, 'camaras.html', context)
 
-# Funcion para guardar un comentario si se ha hecho un post request
-
 
 def guardar_comentario(request, camera, name):
-    comment_text = request.POST.get('body')  # Cambiar 'cuerpo' a 'body'
-    if comment_text:  # Verificar si comment_text no es vacío
-        # Guardar el comentario en la base de datos con la camara, comentario,
-        # fecha y la imagen de la cámara en ese momento
+
+    # Funcion para guardar un comentario si se ha hecho un post request
+
+    comment_text = request.POST.get('body')
+    if comment_text:  # Verificamos que el texto no es vacío
+        # Guardar el comentario en la base de datos
         img_comment = guardar_comentarios(camera.img_path)
         comment = Comment(name=name, camera=camera, comment=comment_text,
                           date=timezone.now(), img_path_comment=img_comment)
@@ -183,8 +176,7 @@ def ver_comentarios(request):
     if request.method == 'POST':
         guardar_comentario(request, camera, username)
 
-    # Obtener todos los comentarios de la camera de más reciente a más
-    # antiguo
+    # Obtener todos los comentarios mas nuevos de la camara
     comments = Comment.objects.filter(camera=camera).order_by('-date')
     context = {
         'request': request,
@@ -201,9 +193,9 @@ def ver_comentarios(request):
 
 
 def camara_id(request, id):
-    # Seleccionar la cámara con el identificador indicado. Si no existe, se
-    # mostrará un mensaje de error. En caso contrario, se mostrará la imagen
-    # de la cámara, y un enlace para volver al listado de cámaras.
+
+    # Seleccionar la cámara con el identificador indicado. Si no existe, se mostrará un mensaje de error.
+
     camera = Camera.objects.filter(id=id).first()
     username, font_size, font_family = userConfiguration(request)
 
@@ -216,8 +208,7 @@ def camara_id(request, id):
     if request.method == 'POST':
         guardar_comentarios(request, camera, username)
 
-    # Obtener todos los comentarios de la camera de más reciente a más
-    # antiguo
+    # Obtener todos los comentarios de la camara
     comments = Comment.objects.filter(camera=camera).order_by('-date')
     context = {
         'request': request,
@@ -234,10 +225,9 @@ def camara_id(request, id):
 
 
 def get_url(img_path):
-    """
-    Obtiene la URL de la última imagen, añadiendo un
-    parámetro de tiempo para evitar el caché del navegador.
-    """
+
+    # Obtiene la URL de la última imagen
+
     if img_path is None:
         print("No se encontró ninguna imagen")
         return None
@@ -246,6 +236,8 @@ def get_url(img_path):
 
 
 def get_imagen(request, id):
+
+    #Obtener la imagen de la camara
     camera = Camera.objects.filter(id=id).first()
     if camera is None:
         return HttpResponse("Cámara no encontrada")
@@ -262,12 +254,13 @@ def get_imagen(request, id):
 
 
 def cargar_comentarios(request, id):
+
+    # Cargar los comentarios de las camaras
     camera = Camera.objects.filter(id=id).first()
     if camera is None:
         return HttpResponse("Cámara no encontrada")
 
-    # Obtener todos los comentarios de la camera de más reciente a más
-    # antiguo
+    # Obtener todos los comentarios de la camara
     comments = Comment.objects.filter(camera=camera).order_by('-date')
 
     context = {
@@ -287,7 +280,7 @@ def camara_json(request, id):
     except Camera.DoesNotExist:
         raise Http404("Cámara no disponible")
 
-    # Obtener los comentarios de la cámara
+    # Obtener los comentarios de la camara
     comments = Comment.objects.filter(camera=cam)
 
     # Serializar los comentarios a JSON
@@ -308,7 +301,7 @@ def camaras_json(request):
     cameras = Camera.objects.all()
     data = []
     for cam in cameras:
-        # Obtener los comentarios de la cámara
+        # Obtener los comentarios de la camara
         comments = Comment.objects.filter(camera=cam)
 
         # Serializar los comentarios a JSON
@@ -340,7 +333,7 @@ def help(request):
 def token_sesion(request):
     auth_token = request.session.get('auth_token')
     if auth_token is None:
-        # Si no hay un token de autenticación, crea uno
+        # Crea un token de autenticación si no existe uno
         user = User.objects.get(username=request.session['username'])
         token, created = Token.objects.get_or_create(user=user)
         if created:

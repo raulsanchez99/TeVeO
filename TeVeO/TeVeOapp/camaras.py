@@ -1,5 +1,5 @@
-from urllib.request import urlopen
 from .models import Camera
+
 import os
 import re
 import requests
@@ -44,7 +44,7 @@ def get_listado1(camera):
         name = camera.getElementsByTagName('lugar')[0].firstChild.data
         coordinates = camera.getElementsByTagName('coordenadas')[
             0].firstChild.data
-        # A las coordenadas les tengo que dar la vuelta, vienen al reves
+        # Invertir las coordenadas
         coordinates = ','.join(coordinates.split(',')[::-1])
         source_id = id_listado1
         return source_id, id, src, name, coordinates
@@ -58,27 +58,15 @@ def get_listado1(camera):
 
 def get_listado2(camera):
     try:
-        # Obtiene el atributo 'id' del elemento 'camera'
         id = camera.getAttribute('id')
-        # Obtiene el contenido del primer elemento 'url' dentro del elemento
-        # 'camera'
         src = camera.getElementsByTagName('url')[0].firstChild.data
-        # Obtiene el contenido del primer elemento 'info' dentro del elemento
-        # 'camera'
         name = camera.getElementsByTagName('info')[0].firstChild.data
-        # Obtiene el contenido del primer elemento 'latitude' dentro del
-        # elemento 'camera'
         latitude = camera.getElementsByTagName('latitude')[0].firstChild.data
-        # Obtiene el contenido del primer elemento 'longitude' dentro del
-        # elemento 'camera'
-        longitude = camera.getElementsByTagName(
-            'longitude')[0].firstChild.data
-        # Combina la latitud y la longitud en una cadena, separada por una
-        # coma
+        longitude = camera.getElementsByTagName('longitude')[0].firstChild.data
         coordinates = f'{latitude},{longitude}'
-        # Define el id de la fuente
         source_id = id_listado2
-        # Devuelve los datos extraídos
+
+    # Devuelve los datos extraídos
     except IndexError:
         print("Error: No se pudo obtener el archivo.")
         return None
@@ -101,9 +89,7 @@ def get_CCTV(cameras):
                 'description')[
                 0].firstChild.data
 
-            # La descripción contiene la URL de la imagen
-            # de la cámara en un elemento img
-            # Podemos extraer la URL utilizando una expresión regular
+            # Obtener la url
             img_url_match = re.search('src=(https://[^ ]+)', description)
             if img_url_match is None:
                 print(f"La URL de la imagen de la cámara {number} no esta disponible")
@@ -114,9 +100,8 @@ def get_CCTV(cameras):
             coordinates = placemark.getElementsByTagName(
                 'Point')[0].getElementsByTagName(
                 'coordinates')[0].firstChild.data
-            # Hay que invertir las coordenadas
+
             coordinates = ','.join(coordinates.split(',')[::-1])
-            # Eliminar el primer elemento de las coordenadas
             coordinates = coordinates.split(',')[1]
 
             # Añadir la cámara a la base de datos si no existe
@@ -133,22 +118,14 @@ def get_CCTV(cameras):
 
 def get_dgt(camera):
     try:
-        # Obtener el id de la cámara
+
         camera_id = camera.getAttribute('id')
-        # Obtener el nombre de la cámara
-        camera_name = camera.getElementsByTagName(
-            '_0:cctvCameraIdentification')[0].firstChild.data
-        # Obtener la URL de la imagen de la cámara
-        image_url = camera.getElementsByTagName(
-            '_0:urlLinkAddress')[0].firstChild.data
-        # Obtener la latitud de la cámara
-        latitude = camera.getElementsByTagName(
-            '_0:latitude')[0].firstChild.data
-        # Obtener la longitud de la cámara
-        longitude = camera.getElementsByTagName(
-            '_0:longitude')[0].firstChild.data
-        # Definir el id de la fuente
+        camera_name = camera.getElementsByTagName('_0:cctvCameraIdentification')[0].firstChild.data
+        image_url = camera.getElementsByTagName('_0:urlLinkAddress')[0].firstChild.data
+        latitude = camera.getElementsByTagName('_0:latitude')[0].firstChild.data
+        longitude = camera.getElementsByTagName('_0:longitude')[0].firstChild.data
         source_id = id_dgt
+
         # Devolver los datos extraídos
         return (source_id, camera_id, image_url, camera_name,
                 f'{latitude},{longitude}')
@@ -162,7 +139,7 @@ def get_dgt(camera):
 
 
 def download_files(xml_file, file_path):
-    # Determinar la URL correcta en función del nombre del archivo XML
+    # URL del archivo XML
     if xml_file == 'listado1.xml':
         url = url_listado1
     elif xml_file == 'listado2.xml':
@@ -182,6 +159,7 @@ def download_files(xml_file, file_path):
         }
 
         response = requests.get(url, headers=headers)
+
         # Escribir el contenido de la respuesta en un archivo
         with open(file_path, 'wb') as f:
             f.write(response.content)
@@ -267,9 +245,7 @@ def guardar_imagen(cam):
                 camera with id {cam.id} and path {img_path}""")
 
         else:
-            # Si falla la petición, imprimir un mensaje de error y 
-            # asignar a la cámara una imagen por defecto que está
-            # en la carpeta static/img/resources/error.jpg
+            # Si falla la petición, imprimir un mensaje de error
             cam.img_path = 'img/resources/error.jpg'
             cam.save()
             print(

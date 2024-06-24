@@ -1,6 +1,6 @@
+# Defines una clase para tu formulario que hereda de forms.Form
 from django import forms
 
-# Defines una clase para tu formulario que hereda de forms.Form
 class ConfigForm(forms.Form):
     username = forms.CharField(
         label='Nombre de Usuario', max_length=100, required=False)
