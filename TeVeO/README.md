@@ -59,3 +59,7 @@ Para cada pagina he incluido la informacion citada anteriormente en el resumen.
 ## Otros requisitos
 * Tests de extremo a extremo para cada tipo de recurso de la practica.
 * He incluido en archivo requirements.txt con las bibliotecas de Python que hacen falta para que la aplicacion funcione correctamente.
+
+## Comentarios sobre la practica
+He intentado añadir mi practica e PythonAnywhere pero debido a un problema con los archivos no he podido subirla.
+La practica funciona perfectamente en los laboratorios de la universidad como lo demuestro en el video: https://youtu.be/aZRgjldtjtM
